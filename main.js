@@ -11,7 +11,7 @@ middleware(app);
 
 // Rutas
 app.use("/", viewsRoutes);
-app.use("/api/user/", userRoutes);
+app.use("/api/auth/", userRoutes);
 
 app.listen(port,()=>{
     console.log(`Servidor iniciado en el puerto ${port}`);

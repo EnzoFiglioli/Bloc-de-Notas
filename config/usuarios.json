@@ -1,27 +1,42 @@
 [
-    {
-        "username": "Enzo",
-        "password": "1234",
-        "tareas":[
-            {
-                "incompletas":["Esto es una tarea"]
-            },
-            {
-                "completadas":[]
-            }
+  {
+    "username": "Enzo",
+    "password": "1234",
+    "tareas": [
+      {
+        "incompletas": [
+          "Esto es una tarea"
         ]
-    },
-    {
-        "username": "Cameron",
-        "password": "H@ltAndC@tchF1r3",
-        "tareas":[
-            {
-                "incompletas":["Esto es una tarea"]
-            },
-            {
-                "completadas":[]
-            }
+      },
+      {
+        "completadas": []
+      }
+    ]
+  },
+  {
+    "username": "Cameron",
+    "password": "H@ltAndC@tchF1r3",
+    "tareas": [
+      {
+        "incompletas": [
+          "Esto es una tarea"
         ]
-    }
-
+      },
+      {
+        "completadas": []
+      }
+    ]
+  },
+  {
+    "username": "enzofiglioli",
+    "password": "devEnzoF1996",
+    "tareas": [
+      {
+        "incompletas": []
+      },
+      {
+        "completadas": []
+      }
+    ]
+  }
 ]

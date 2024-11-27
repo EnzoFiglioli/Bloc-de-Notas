@@ -8,6 +8,8 @@ const middleware = (app) => {
     app.set("views", join(__dirname, "../views"));
     app.use(morgan("dev"));
     app.use(express.urlencoded({extended:false}));
+    app.use(express.static(join(__dirname,"../public")));
+    app.use(express.json());
 };
 
 module.exports = middleware;

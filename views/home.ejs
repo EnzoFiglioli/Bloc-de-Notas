@@ -25,53 +25,57 @@
         <div class="bg-white p-8 rounded-lg shadow-lg w-96">
             <h3 class="text-3xl font-bold text-center mb-5">Iniciar sesión</h3>
 
-            <form id="login-form" class="space-y-4" action="/api/user/login" method="POST">
+            <form id="login-form" class="space-y-4" onsubmit="dashboardRoute(event)">
                 <input type="text" id="username" placeholder="Username" class="w-full p-2 border border-gray-300 rounded-md" name="username" required>
                 <input type="password" id="password" placeholder="Tu password" class="w-full p-2 border border-gray-300 rounded-md" name="password" required>
                 <input type="submit" value="Iniciar Sesion" class="w-full bg-gray-500 text-white p-2 rounded-md cursor-pointer hover:bg-blue-600">
             </form>
 
             <div class="text-center mt-4">
-                <p class="text-sm">¿No tienes cuenta? <a href="/api/user/register" class="text-blue-500 hover:underline">Registrate aquí</a></p>
+                <p class="text-sm">¿No tienes cuenta? <a href="/api/auth/register" class="text-blue-500 hover:underline">Registrate aquí</a></p>
             </div>
         </div>
     </main>
-    <!-- <script>
-        document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault(); 
+    <script>
+        function dashboardRoute(event) {
+            event.preventDefault();
+            try {
+                const username = document.querySelector('#username').value;
+                const password = document.querySelector('#password').value;
 
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (!username || !password) {
-                alert("Por favor, ingresa tu nombre de usuario y contraseña.");
-                return;
-            }
-
-            fetch("/api/user/login", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if (data.success) {
-                    window.location.href = "/dashboard";
-                } else {
-                    alert("Error al iniciar sesión: " + data.message);
+                if (!username || !password) {
+                    alert('Por favor, ingresa ambos campos.');
+                    return;
                 }
-            })
-            .catch(err => {
+
+                fetch("/api/auth/login", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        window.location.href = "/dashboard";
+                    } else {
+                        alert(data.msg || 'Error en el login');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Hubo un error al intentar iniciar sesión.');
+                });
+
+            } catch (err) {
                 console.error(err);
-                alert("Hubo un error al intentar iniciar sesión.");
-            });
-        });
-    </script> -->
+                alert('Error inesperado en el proceso de login.');
+            }
+        }
+    </script>
 </body>
 </html>
