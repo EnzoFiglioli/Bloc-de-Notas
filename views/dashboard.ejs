@@ -39,66 +39,27 @@
             </ul>
         </div>
     </main>
-
     <script>
-        // Función para agregar una nueva tarea
-        function addTask() {
-            const taskInput = document.getElementById("task-input");
-            const taskText = taskInput.value.trim();
+        fetch("http://localhost:8080/api/tareas")
+                .then(rs => rs.json())
+                .then(data => {
+                    // Limpiar el contenido actual de la lista
+                    const taskList = document.getElementById("task-list");
+                    taskList.innerHTML = '';
 
-            if (taskText !== "") {
-                const taskList = document.getElementById("task-list");
-
-                // Crear un nuevo elemento de tarea
-                const li = document.createElement("li");
-                li.classList.add("flex", "justify-between", "items-center", "bg-teal-50", "p-4", "rounded-lg", "shadow-md");
-
-                // Crear el checkbox para marcar la tarea como completada
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.classList.add("task-checkbox");
-                checkbox.addEventListener("change", toggleTaskCompletion);
-
-                // Crear el texto de la tarea
-                const taskSpan = document.createElement("span");
-                taskSpan.textContent = taskText;
-                taskSpan.classList.add("flex-1", "text-teal-800");
-
-                // Crear el botón de eliminar
-                const deleteButton = document.createElement("button");
-                deleteButton.textContent = "Eliminar";
-                deleteButton.classList.add("text-red-600", "hover:text-red-700", "ml-4");
-                deleteButton.addEventListener("click", () => deleteTask(li));
-
-                // Agregar los elementos a la tarea
-                li.appendChild(checkbox);
-                li.appendChild(taskSpan);
-                li.appendChild(deleteButton);
-
-                // Agregar la tarea a la lista
-                taskList.appendChild(li);
-
-                // Limpiar el campo de entrada
-                taskInput.value = "";
-            } else {
-                alert("Por favor, ingresa una tarea.");
-            }
-        }
-
-        // Función para marcar una tarea como completada
-        function toggleTaskCompletion(event) {
-            const taskSpan = event.target.nextElementSibling;
-            if (event.target.checked) {
-                taskSpan.classList.add("line-through", "text-gray-500");
-            } else {
-                taskSpan.classList.remove("line-through", "text-gray-500");
-            }
-        }
-
-        // Función para eliminar una tarea
-        function deleteTask(taskElement) {
-            taskElement.remove();
-        }
+                    // Agregar cada tarea a la lista
+                    data.forEach(task => {
+                        
+                        const taskElement = document.createElement("li");
+                        taskElement.classList.add("bg-teal-100", "p-4", "rounded-lg", "flex", "justify-between", "items-center");
+                        taskElement.innerHTML = `
+                            <span>${task.concepto}</span>
+                            <button onclick="removeTask(${task.id_task})" class="text-red-600 hover:text-red-800">Eliminar</button>
+                        `;
+                        taskList.appendChild(taskElement);
+                    });
+                })
+                .catch(err => console.log("Error al obtener tareas:", err));
     </script>
 
 </body>
