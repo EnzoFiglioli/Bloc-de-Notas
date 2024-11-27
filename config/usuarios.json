@@ -1,11 +1,27 @@
 [
     {
         "username": "Enzo",
-        "password": "1234"
+        "password": "1234",
+        "tareas":[
+            {
+                "incompletas":["Esto es una tarea"]
+            },
+            {
+                "completadas":[]
+            }
+        ]
     },
     {
         "username": "Cameron",
-        "password": "H@ltAndC@tchF1r3"
+        "password": "H@ltAndC@tchF1r3",
+        "tareas":[
+            {
+                "incompletas":["Esto es una tarea"]
+            },
+            {
+                "completadas":[]
+            }
+        ]
     }
 
 ]
