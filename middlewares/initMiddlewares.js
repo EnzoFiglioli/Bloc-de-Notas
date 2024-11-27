@@ -1,9 +1,13 @@
+// middleware.js
 const express = require("express");
-const app = express();
 const morgan = require("morgan");
+const { join } = require("path");
 
-app.use("views","engine","ejs");
-app.set("views",__dirname + "views")
-app.use(morgan("dev"));
+const middleware = (app) => {
+    app.set("view engine", "ejs");
+    app.set("views", join(__dirname, "../views"));
+    app.use(morgan("dev"));
+    app.use(express.urlencoded({extended:false}));
+};
 
 module.exports = middleware;

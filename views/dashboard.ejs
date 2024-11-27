@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Header -->
+    <header class="bg-teal-600 text-white p-6 shadow-md">
+        <nav class="flex justify-between items-center">
+            <a href="/" class="text-3xl font-semibold">ToDoApp</a>
+            <ul class="flex space-x-6">
+                <li><a href="/profile" class="hover:text-teal-200">Perfil</a></li>
+                <li><a href="/settings" class="hover:text-teal-200">Ajustes</a></li>
+                <li><a href="/logout" class="hover:text-teal-200">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-8">
+        <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg space-y-6">
+
+            <!-- Title -->
+            <h1 class="text-4xl font-bold text-center text-teal-600">Mi To-Do List</h1>
+
+            <!-- Input to Add New Task -->
+            <div class="flex space-x-4 items-center">
+                <input id="task-input" type="text" placeholder="Escribe una tarea..." class="w-full p-4 border-2 border-teal-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <button onclick="addTask()" class="w-36 bg-teal-600 text-white p-4 rounded-lg hover:bg-teal-700 transition-colors">Agregar</button>
+            </div>
+
+            <!-- Task List -->
+            <ul id="task-list" class="space-y-4">
+                <!-- Las tareas se agregarán aquí dinámicamente -->
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        // Función para agregar una nueva tarea
+        function addTask() {
+            const taskInput = document.getElementById("task-input");
+            const taskText = taskInput.value.trim();
+
+            if (taskText !== "") {
+                const taskList = document.getElementById("task-list");
+
+                // Crear un nuevo elemento de tarea
+                const li = document.createElement("li");
+                li.classList.add("flex", "justify-between", "items-center", "bg-teal-50", "p-4", "rounded-lg", "shadow-md");
+
+                // Crear el checkbox para marcar la tarea como completada
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.classList.add("task-checkbox");
+                checkbox.addEventListener("change", toggleTaskCompletion);
+
+                // Crear el texto de la tarea
+                const taskSpan = document.createElement("span");
+                taskSpan.textContent = taskText;
+                taskSpan.classList.add("flex-1", "text-teal-800");
+
+                // Crear el botón de eliminar
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Eliminar";
+                deleteButton.classList.add("text-red-600", "hover:text-red-700", "ml-4");
+                deleteButton.addEventListener("click", () => deleteTask(li));
+
+                // Agregar los elementos a la tarea
+                li.appendChild(checkbox);
+                li.appendChild(taskSpan);
+                li.appendChild(deleteButton);
+
+                // Agregar la tarea a la lista
+                taskList.appendChild(li);
+
+                // Limpiar el campo de entrada
+                taskInput.value = "";
+            } else {
+                alert("Por favor, ingresa una tarea.");
+            }
+        }
+
+        // Función para marcar una tarea como completada
+        function toggleTaskCompletion(event) {
+            const taskSpan = event.target.nextElementSibling;
+            if (event.target.checked) {
+                taskSpan.classList.add("line-through", "text-gray-500");
+            } else {
+                taskSpan.classList.remove("line-through", "text-gray-500");
+            }
+        }
+
+        // Función para eliminar una tarea
+        function deleteTask(taskElement) {
+            taskElement.remove();
+        }
+    </script>
+
+</body>
+</html>

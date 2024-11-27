@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toddlyst</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-gray-500 text-white p-4">
+        <nav class="flex justify-between items-center">
+            <ul class="flex space-x-4">
+                <li><a href="#about" class="hover:text-gray-200">Acerca de nosotros</a></li>
+            </ul>
+            <ul class="flex space-x-4">
+                <li><a href="/api/user/register" class="hover:text-gray-200">Registrate</a></li>
+                <li><a href="/api/user/login" class="hover:text-gray-200">Iniciar sesion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1 class="text-3xl font-bold text-center mb-4">Hola Mundo</h1>
+
+    <main class="flex justify-center items-center h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+            <h3 class="text-3xl font-bold text-center mb-5">Iniciar sesión</h3>
+
+            <form id="login-form" class="space-y-4" action="/api/user/login" method="POST">
+                <input type="text" id="username" placeholder="Username" class="w-full p-2 border border-gray-300 rounded-md" name="username" required>
+                <input type="password" id="password" placeholder="Tu password" class="w-full p-2 border border-gray-300 rounded-md" name="password" required>
+                <input type="submit" value="Iniciar Sesion" class="w-full bg-gray-500 text-white p-2 rounded-md cursor-pointer hover:bg-blue-600">
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-sm">¿No tienes cuenta? <a href="/api/user/register" class="text-blue-500 hover:underline">Registrate aquí</a></p>
+            </div>
+        </div>
+    </main>
+    <!-- <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert("Por favor, ingresa tu nombre de usuario y contraseña.");
+                return;
+            }
+
+            fetch("/api/user/login", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    window.location.href = "/dashboard";
+                } else {
+                    alert("Error al iniciar sesión: " + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Hubo un error al intentar iniciar sesión.");
+            });
+        });
+    </script> -->
+</body>
+</html>
