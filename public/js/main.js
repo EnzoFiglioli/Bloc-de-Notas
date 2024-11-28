@@ -6,13 +6,14 @@ const taskList = document.getElementById("task-list");
 // Cargar tareas al inicio
 loadTasks();
 
-function registerForm(event){
-    event.preventSubmit();
+function registerForm(event) {
+    event.preventDefault(); // Evita el envío por defecto del formulario
+
     const username = document.querySelector('#username').value;
     const password = document.querySelector('#password').value;
     const registerForm = document.querySelector("#register-form");
 
-    fetch("/api/auth/register", {
+    fetch("/api/auth/crear", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,16 +26,20 @@ function registerForm(event){
     .then(response => response.json())
     .then(data => {
         if (data.ok) {
+            // Redirige a la página de inicio si el registro es exitoso
             window.location.href = "/";
         } else {
+            // Muestra un mensaje de error si algo salió mal
             alert(data.msg || 'Error al registrarse');
         }
     })
     .catch(err => {
         console.error(err);
-        alert('Hubo un error al intentar iniciar sesión.');
+        alert('Hubo un error al intentar registrarse.');
     });
 }
+
+// Asegúrate de vincular la función al evento de submit del formulario
 
 function updateTask(id, concepto) {
     const taskUpdate = prompt("Actualiza la tarea", concepto);

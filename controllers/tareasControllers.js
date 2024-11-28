@@ -2,34 +2,17 @@ const notas = require("../config/usuarios.json");
 const { Tarea } = require("../models/Tareas.js");
 const { Usuario } = require("../models/Usuario.js");
 
+const userActive = "Enzo";
+
 const tareasLista = async(req, res) => {
     try {
-        const userActive = "EnzoF";
         const user = await Usuario.findOne({username:userActive});
-        
         if(user) {
-            const tareasIncompletas = await Usuario.findOne({username:userActive})
-                .populate({
-                    path:'tareas',
-                    match:{
-                        incompletas:true,
-                        estado: false
-                    }
-                });
+            const {_id} = user;
+            const tareasFiltradas = await Tarea.find({ usuarioId: _id });
+            if(tareasFiltradas) return res.json(tareasFiltradas);
 
-            if (tareasIncompletas) {
-                const {tareas} = tareasIncompletas;
-                const listaDeTareas = await Tarea.find();
-
-                const tareasFiltradas = listaDeTareas.filter((i) =>{
-                    i._id === tareas._id
-                });
-                if(tareasFiltradas) return res.json(listaDeTareas);
-
-                res.status(404).json({msg:'Tareas no encontradas'});
-            } else {
-                return res.status(404).json({ msg: 'No hay tareas incompletas' });
-            }
+            res.status(404).json({msg:'Tareas no encontradas'});
         } else {
             return res.status(404).json({ msg: 'Usuario no encontrado' });
         }
@@ -42,18 +25,14 @@ const tareasLista = async(req, res) => {
 const crearTarea = async (req,res) => {
     try{
         const {concepto} = req.body;
-       const tarea = await Tarea.create({concepto});
-       const usuarioActualizado = await Usuario.findOneAndUpdate(
+       const user = await Usuario.findOne({username: userActive});
+       await Tarea.create(
         {
-            username:'EnzoF'
-        },{
-            $push:{
-                tareas:{incompletas: tarea._id}
-            }
-        }
-    );
+            concepto,
+            usuarioId: user._id
+        });
 
-    res.json({msg:'Tarea creada exitosamente', usuarioActualizado});
+    res.json({msg:'Tarea creada exitosamente'});
     }catch(err){
         res.status(404).json({msg:`Error al crear la tarea: ${err.message}`})
     }
@@ -64,7 +43,12 @@ const eliminarTarea = async (req,res)=> {
         const { id } = req.params;
         const tarea = await Tarea.findByIdAndDelete(id);
         if(!tarea) return res.status(404).json({msg:'Tarea no encontrada'});
-        res.json({msg:'Tarea eliminada exitosamente!'});
+        
+        if(tarea){
+            await Usuario.findOne({username:userActive})
+            .populate({path:'tareas'}).findByIdAndDelete(id);
+            res.json({msg:'Tarea eliminada exitosamente!'});
+        }
     }catch{
         res.status(500).json({msg:'Error al eliminar tarea'})
     }

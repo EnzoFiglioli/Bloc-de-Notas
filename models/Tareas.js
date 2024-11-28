@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const tareaSchema = new mongoose.Schema({
+    usuarioId: {type: mongoose.Schema.ObjectId, ref:'Usuario'},
     concepto: { type: String, required: true },
     estado: { type: Boolean, default: false},
     timestamp : { type: Date, default: Date.now() }

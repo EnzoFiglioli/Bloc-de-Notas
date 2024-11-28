@@ -29,25 +29,20 @@ const signIn = async (req, res) => {
         const newUser = {
             username,
             password,
-            tareas: [
-                { incompletas: [] },
-                { completadas: [] }
-            ]
+            nombreCompleto: "No Name",
+            email:'generic@gmail.com',
+            tareas: []
         };
         
-        const data = readFileSync(usuariosPath, 'utf-8');
-        const usuarios = JSON.parse(data); 
 
-        const userExists = usuarios.some(user => user.username === username);
+        const userExists = await Usuario.findOne({username});
+        console.log(userExists);
+        
         if (userExists) {
             return res.status(400).json({ msg: 'El usuario ya existe' });
         }
         
         await Usuario.create(newUser);
-        usuarios.push(newUser);
-
-        writeFileSync(usuariosPath, JSON.stringify(usuarios, null, 2), 'utf-8');
-
         return res.json({ msg: 'Usuario creado exitosamente', data: newUser });
 
     } catch (err) {
