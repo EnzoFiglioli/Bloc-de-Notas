@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - To-Do List</title>
+    <script src="https://kit.fontawesome.com/0c273bd24b.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
+    <style>
+        #tarea-actualizar, #tarea-eliminar{
+            cursor:pointer
+        }
+    </style>
 
     <!-- Header -->
     <header class="bg-teal-600 text-white p-6 shadow-md">
@@ -15,7 +21,7 @@
             <ul class="flex space-x-6">
                 <li><a href="/profile" class="hover:text-teal-200">Perfil</a></li>
                 <li><a href="/settings" class="hover:text-teal-200">Ajustes</a></li>
-                <li><a href="/logout" class="hover:text-teal-200">Cerrar sesión</a></li>
+                <li><a href="/logout" class="hover:text-teal-200"><i class="fa-solid fa-power-off pr-3"></i>Cerrar sesión</a></li>
             </ul>
         </nav>
     </header>
@@ -28,10 +34,10 @@
             <h1 class="text-4xl font-bold text-center text-teal-600">Mi To-Do List</h1>
 
             <!-- Input to Add New Task -->
-            <div class="flex space-x-4 items-center">
+            <form id="task-form" class="flex space-x-4 items-center">
                 <input id="task-input" type="text" placeholder="Escribe una tarea..." class="w-full p-4 border-2 border-teal-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                <button onclick="addTask()" class="w-36 bg-teal-600 text-white p-4 rounded-lg hover:bg-teal-700 transition-colors">Agregar</button>
-            </div>
+                <button type="submit" class="w-36 bg-teal-600 text-white p-4 rounded-lg hover:bg-teal-700 transition-colors">Agregar</button>
+            </form>
 
             <!-- Task List -->
             <ul id="task-list" class="space-y-4">
@@ -40,26 +46,84 @@
         </div>
     </main>
     <script>
-        fetch("http://localhost:8080/api/tareas")
-                .then(rs => rs.json())
-                .then(data => {
-                    // Limpiar el contenido actual de la lista
-                    const taskList = document.getElementById("task-list");
-                    taskList.innerHTML = '';
+        // Referencias a elementos del DOM
+        const taskForm = document.getElementById("task-form");
+        const taskInput = document.getElementById("task-input");
+        const taskList = document.getElementById("task-list");
 
-                    // Agregar cada tarea a la lista
-                    data.forEach(task => {
-                        
-                        const taskElement = document.createElement("li");
-                        taskElement.classList.add("bg-teal-100", "p-4", "rounded-lg", "flex", "justify-between", "items-center");
-                        taskElement.innerHTML = `
-                            <span>${task.concepto}</span>
-                            <button onclick="removeTask(${task.id_task})" class="text-red-600 hover:text-red-800">Eliminar</button>
-                        `;
-                        taskList.appendChild(taskElement);
-                    });
+        // Cargar tareas al inicio
+        loadTasks();
+
+        function deleteTask(id) {
+            if (!confirm("¿Estás seguro de que quieres eliminar esta tarea?")) {
+                return;
+            }
+
+            fetch(`http://localhost:8080/api/tareas/eliminar/${id}`, {
+                method: "DELETE"
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+                loadTasks(); // Recargar la lista después de eliminar
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Error al eliminar la tarea. Inténtalo de nuevo más tarde.");
+            });
+        }
+
+        // Escuchar evento submit del formulario
+        taskForm.addEventListener("submit", addTask);
+
+        // Función para cargar las tareas desde el servidor
+        function loadTasks() {
+            fetch("http://localhost:8080/api/tareas")
+                .then(response => response.json())
+                .then(data => {
+                    taskList.innerHTML = ''; // Limpiar lista
+                    data.forEach(task => addTaskToList(task.concepto, task.timestamp, task._id)); // Agregar cada tarea
                 })
-                .catch(err => console.log("Error al obtener tareas:", err));
+                .catch(error => console.error("Error al obtener tareas:", error));
+        }
+
+        // Función para agregar una tarea al servidor
+        function addTask(event) {
+            event.preventDefault(); // Prevenir el refresh del formulario
+            const concepto = taskInput.value.trim(); // Obtener valor del input
+
+            if (!concepto) return alert("Por favor, escribe una tarea."); // Validar campo vacío
+
+            fetch("http://localhost:8080/api/tareas/crear", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ concepto }) // Enviar tarea al servidor
+            })
+                .then(response => response.json())
+                .then(() => {
+                    addTaskToList(concepto); // Agregar la tarea a la lista local
+                    taskInput.value = ""; // Limpiar input
+                })
+                .catch(error => console.error("Error al agregar tarea:", error));
+        }
+
+        // Función para agregar una tarea al DOM
+        function addTaskToList(concepto, fecha, id) {
+            const date = new Date(fecha);
+            let timestamp = date.toLocaleDateString();
+            const taskElement = document.createElement("li");
+            taskElement.classList.add("bg-teal-100", "p-4", "rounded-lg", "flex", "justify-between", "items-center");
+            taskElement.innerHTML = `
+                <h5>${timestamp}</h5>
+                <span>${concepto}</span>
+                <div class="flex gap-5">
+                    <a href="/tareas/actualizar/${id}" id="tarea-actualizar"><i class="fa-solid fa-pen"></i></a>
+                    <span onclick="deleteTask('${id}')" id="tarea-eliminar"><i class="fa-solid fa-x"></i></span>
+                </div>
+            `;
+            taskList.appendChild(taskElement);
+        }
+
     </script>
 
 </body>

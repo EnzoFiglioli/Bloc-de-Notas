@@ -3,17 +3,17 @@ const express = require("express");
 const morgan = require("morgan");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
+const {connectToMongoDB} = require("../config/dbConfigure.js")
 
-const middleware = (app) => {
-    
-    
+const middleware = (app) => {    
     app.set("view engine", "ejs");
     app.set("views", join(__dirname, "../views"));
-    
     app.use(morgan("dev"));
     app.use(express.urlencoded({extended:false}));
     app.use(express.static(join(__dirname,"../public")));
     app.use(express.json());
+    
+    connectToMongoDB();
 };
 
 module.exports = middleware;
