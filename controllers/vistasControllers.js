@@ -16,4 +16,13 @@ const dashboardView = (req, res, next) => {
     }
 };
 
-module.exports = { homeView, dashboardView };
+const loginView = (req,res) => {
+    try{
+        return res.render("login");
+    }catch{
+        console.error("Error rendering the login view:", error);
+        return next(error);
+    }
+}
+
+module.exports = { homeView, dashboardView, loginView };

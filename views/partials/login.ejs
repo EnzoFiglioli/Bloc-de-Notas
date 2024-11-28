@@ -1,0 +1,15 @@
+<main class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h3 class="text-3xl font-bold text-center mb-5">Iniciar sesión</h3>
+
+        <form id="login-form" class="space-y-4" onsubmit="dashboardRoute(event)">
+            <input type="text" id="username" placeholder="Username" class="w-full p-2 border border-gray-300 rounded-md" name="username" required>
+            <input type="password" id="password" placeholder="Tu password" class="w-full p-2 border border-gray-300 rounded-md" name="password" required>
+            <input type="submit" value="Iniciar Sesion" class="w-full bg-gray-500 text-white p-2 rounded-md cursor-pointer hover:bg-blue-600">
+        </form>
+
+        <div class="text-center mt-4">
+            <p class="text-sm">¿No tienes cuenta? <a href="/api/auth/register" class="text-blue-500 hover:underline">Registrate aquí</a></p>
+        </div>
+    </div>
+</main>

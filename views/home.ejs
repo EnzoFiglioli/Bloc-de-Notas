@@ -1,44 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TodoListo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-teal-100">
-    <header class="bg-teal-500 text-white p-4">
-        <nav class="flex justify-between items-center">
-            <ul class="flex space-x-4">
-            </ul>
-            <ul class="flex space-x-4">
-                <li><a href="/api/user/register" class="hover:text-gray-200">Registrate</a></li>
-                <li><a href="/api/user/login" class="hover:text-gray-200">Iniciar sesion</a></li>
-            </ul>
-        </nav>
-    </header>
+<%- include('./partials/head') %>
+<%- include('./partials/headerHome') %>
 
-    <h1 class="text-8xl font-bold text-center mb-4">TodoListo</h1>
-    <h3 class="text-4xl font-bold text-center mb-2">Organiza tus tareas, organiza tu vida📋✔</h3>
+<div class="text-center py-12 bg-gradient-to-r from-teal-500 to-teal-700 text-white">
+    <h1 class="text-6xl font-extrabold mb-4 tracking-tight">TodoListo</h1>
+    <h3 class="text-2xl font-medium">Organiza tus tareas, organiza tu vida 📋✔</h3>
+</div>
 
-    <main class="flex justify-center items-center h-screen">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-96">
-            <h3 class="text-3xl font-bold text-center mb-5">Iniciar sesión</h3>
+<div class="flex flex-col lg:flex-row lg:h-screen">
+    <!-- Imagen -->
+    <div class="w-full lg:w-1/2 h-64 lg:h-full">
+        <img src="./img/rb_3160.png" alt="Imagen destacada" class="w-full h-full object-cover">
+    </div>
 
-            <form id="login-form" class="space-y-4" onsubmit="dashboardRoute(event)">
-                <input type="text" id="username" placeholder="Username" class="w-full p-2 border border-gray-300 rounded-md" name="username" required>
-                <input type="password" id="password" placeholder="Tu password" class="w-full p-2 border border-gray-300 rounded-md" name="password" required>
-                <input type="submit" value="Iniciar Sesion" class="w-full bg-gray-500 text-white p-2 rounded-md cursor-pointer hover:bg-blue-600">
-            </form>
+    <!-- Texto -->
+    <div class="w-full lg:w-1/2 h-auto lg:h-full flex flex-col justify-center items-center bg-gray-100 px-6 py-12 lg:px-20">
+        <h2 class="text-3xl md:text-4xl font-bold text-teal-600 mb-6 text-center lg:text-left">Bienvenido a TodoListo</h2>
+        <p class="text-gray-700 text-base md:text-lg leading-relaxed mb-8 text-center lg:text-left">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex obcaecati eos odio quas, vel incidunt dignissimos quis itaque doloribus voluptatibus sunt, veritatis placeat autem veniam eum beatae nulla. Ratione, blanditiis!
+        </p>
+        <button class="px-6 py-3 bg-teal-600 text-white text-base md:text-lg font-semibold rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+            Leer más
+        </button>
+    </div>
+</div>
 
-            <div class="text-center mt-4">
-                <p class="text-sm">¿No tienes cuenta? <a href="/api/auth/register" class="text-blue-500 hover:underline">Registrate aquí</a></p>
-            </div>
-        </div>
-    </main>
-    <footer class="bg-gray-100 text-center p-4 mt-8">
-        <p class="text-gray-600">&copy; <%= new Date().getFullYear() %> ToDoApp. Todos los derechos reservados.</p>
-    </footer>
-    <script src="./js/main.js"></script>
-</body>
-</html>
+<%- include('./partials/footer') %>
