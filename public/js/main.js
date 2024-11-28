@@ -87,11 +87,12 @@ taskForm.addEventListener("submit", addTask);
 
 // Función para cargar las tareas desde el servidor
 function loadTasks() {
+    const token = localStorage.getItem("token");
     fetch("http://localhost:8080/api/tareas")
         .then(response => response.json())
         .then(data => {
-            taskList.innerHTML = ''; // Limpiar lista
-            data.forEach(task => addTaskToList(task.concepto, task.timestamp, task._id)); // Agregar cada tarea
+            taskList.innerHTML = ''; 
+            data.forEach(task => addTaskToList(task.concepto, task.timestamp, task._id));
         })
         .catch(error => console.error("Error al obtener tareas:", error));
 }

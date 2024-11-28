@@ -1,8 +1,7 @@
-const {writeFileSync, readFileSync} = require("fs");
-const { join } = require("path");
-const usuariosPath = join(__dirname, "../config/usuarios.json");
+require("dotenv").config();
 const {Usuario} = require("../models/Usuario.js");
 const jwt = require("jsonwebtoken");
+const secretKey = process.env.SECRET_KEY;
 
 const login = async (req,res) => {
     try{
@@ -11,7 +10,13 @@ const login = async (req,res) => {
         if(usuario){
             const contraseña = usuario.password == password;
             if(contraseña){
-                res.json({ok:true, msg:`Bienvenido ${username}`})
+                const data = {
+                    id: usuario._id,
+                    username: usuario.username
+                }
+                const token = jwt.sign(data,secretKey,{expiresIn:'3d'});
+                res.cookie('token',token);
+                res.json({ok:true, msg:`Bienvenido ${username}`, token});
             }else{ 
                 res.status(404).json({msg:'Usuario o contraseña incorrecta'});
             }
