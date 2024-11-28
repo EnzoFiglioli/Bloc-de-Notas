@@ -3,12 +3,10 @@ const { join } = require("path");
 const usuariosPath = join(__dirname, "../config/usuarios.json");
 const {Usuario} = require("../models/Usuario.js");
 
-const login = (req,res) => {
+const login = async (req,res) => {
     try{
-        const usuarios = require("../config/usuarios.json");
         const { username, password } = req.body;
-        console.log({username, password});        
-        const usuario = usuarios.find((i)=> i.username === username);
+        const usuario = await Usuario.findOne({username}); 
         if(usuario){
             const contraseña = usuario.password == password;
             if(contraseña){

@@ -25,4 +25,13 @@ const loginView = (req,res) => {
     }
 }
 
-module.exports = { homeView, dashboardView, loginView };
+const registerView = (req,res)=>{
+    try{
+        return res.render('register');
+    }catch{
+        console.error("Error rendering the register view:", error);
+        return next(error);
+    }
+} 
+
+module.exports = { homeView, dashboardView, loginView, registerView };
