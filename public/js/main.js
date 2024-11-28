@@ -6,8 +6,8 @@ const taskList = document.getElementById("task-list");
 // Cargar tareas al inicio
 loadTasks();
 
-function updateTask(id) {
-    const taskUpdate = prompt("Actualiza la tarea");
+function updateTask(id, concepto) {
+    const taskUpdate = prompt("Actualiza la tarea", concepto);
     fetch(`http://localhost:8080/api/tareas/actualizar/${id}`, {
         method: "PATCH",
         headers: {
@@ -91,13 +91,12 @@ function addTaskToList(concepto, fecha, id) {
         <h5>${timestamp}</h5>
         <span>${concepto}</span>
         <div class="flex gap-5">
-            <span onclick="updateTask('${id}')" id="tarea-actualizar"><i class="fa-solid fa-pen"></i></span>
+            <span onclick="updateTask('${id}','${concepto}')" id="tarea-actualizar"><i class="fa-solid fa-pen"></i></span>
             <span onclick="deleteTask('${id}')" id="tarea-eliminar"><i class="fa-solid fa-x"></i></span>
         </div>
     `;
     taskList.appendChild(taskElement);
 }
-
 
 function dashboardRoute(event) {
     event.preventDefault();
