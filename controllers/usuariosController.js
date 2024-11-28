@@ -2,6 +2,7 @@ const {writeFileSync, readFileSync} = require("fs");
 const { join } = require("path");
 const usuariosPath = join(__dirname, "../config/usuarios.json");
 const {Usuario} = require("../models/Usuario.js");
+const jwt = require("jsonwebtoken");
 
 const login = async (req,res) => {
     try{
