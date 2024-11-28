@@ -70,4 +70,17 @@ const eliminarTarea = async (req,res)=> {
     }
 }
 
-module.exports = { tareasLista, crearTarea, eliminarTarea };
+const actualizarTarea = async (req,res)=> {
+    try{
+        const { id } = req.params;
+        const { concepto } = req.body;
+
+        const tarea = await Tarea.findByIdAndUpdate({_id:id},{concepto});
+        if(!tarea) return res.status(404).json({msg:'No se pudo actualizar la tarea'});
+        res.json({msg:'Tarea actualizada correctamente!'})
+    }catch{
+        res.status(500).json({msg:'Error al actualizar la tarea'})
+    }
+}
+
+module.exports = { tareasLista, crearTarea, eliminarTarea, actualizarTarea };
