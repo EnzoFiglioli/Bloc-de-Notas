@@ -6,6 +6,36 @@ const taskList = document.getElementById("task-list");
 // Cargar tareas al inicio
 loadTasks();
 
+function registerForm(event){
+    event.preventSubmit();
+    const username = document.querySelector('#username').value;
+    const password = document.querySelector('#password').value;
+    const registerForm = document.querySelector("#register-form");
+
+    fetch("/api/auth/register", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            window.location.href = "/";
+        } else {
+            alert(data.msg || 'Error al registrarse');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Hubo un error al intentar iniciar sesión.');
+    });
+}
+
 function updateTask(id, concepto) {
     const taskUpdate = prompt("Actualiza la tarea", concepto);
     fetch(`http://localhost:8080/api/tareas/actualizar/${id}`, {
