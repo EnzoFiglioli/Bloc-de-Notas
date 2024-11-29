@@ -1,6 +1,7 @@
 require("dotenv").config();
 const {Usuario} = require("../models/Usuario.js");
 const jwt = require("jsonwebtoken");
+const bcryptjs = require("bcryptjs");
 const secretKey = process.env.SECRET_KEY;
 
 const login = async (req,res) => {
@@ -8,7 +9,7 @@ const login = async (req,res) => {
         const { username, password } = req.body;
         const usuario = await Usuario.findOne({username}); 
         if(usuario){
-            const contraseña = usuario.password == password;
+            const contraseña = bcryptjs.compareSync(password, usuario.password);
             if(contraseña){
                 const data = {
                     id: usuario._id,
@@ -38,10 +39,8 @@ const signIn = async (req, res) => {
             email:'generic@gmail.com',
             tareas: []
         };
-        
-
+        newUser.password = bcryptjs.hashSync(password,14);
         const userExists = await Usuario.findOne({username});
-        console.log(userExists);
         
         if (userExists) {
             return res.status(400).json({ msg: 'El usuario ya existe' });
@@ -55,12 +54,13 @@ const signIn = async (req, res) => {
     }
 };
 
-const getAllUsers = (req,res) =>{
+const logout = (req,res) => {
     try{
-        res.json(usuariosPath);
+        res.clearCookie("token");
+        res.json({msg:'sesion cerrada correctamente'});
     }catch{
-        res.json({msg:"No se pudo traer usuarios"})
+        res.status(500).json({msg:'Error en el servidor'});
     }
 }
 
-module.exports = {login, signIn, getAllUsers}
+module.exports = {login, signIn, logout}

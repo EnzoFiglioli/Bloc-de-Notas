@@ -3,11 +3,11 @@ const route = express.Router();
 const {
         login,
         signIn,
-        getAllUsers
+        logout
     } = require("../controllers/usuariosController.js");
 
 route.post("/login", login);
 route.post("/crear", signIn);
-route.get("/", getAllUsers);
+route.get("/logout", logout);
 
 module.exports = route;

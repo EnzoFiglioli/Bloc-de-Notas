@@ -3,6 +3,13 @@ const taskForm = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
 
+function cerrarSesion(event){
+    fetch("/api/auth/logout")
+        .then(response => {
+           if(response.ok) {window.location.href = "/";}
+        })
+        .catch(err => console.log(err))
+} 
 // Cargar tareas al inicio
 loadTasks();
 
@@ -124,7 +131,7 @@ function addTaskToList(concepto, fecha, id) {
     const taskElement = document.createElement("li");
     taskElement.classList.add("bg-teal-100", "p-4", "rounded-lg", "flex", "justify-between", "items-center");
     taskElement.innerHTML = `
-        <h5>${timestamp}</h5>
+        <h5><span class="text-gray font-bold">${timestamp}</span></h5>
         <span>${concepto}</span>
         <div class="flex gap-5">
             <span onclick="updateTask('${id}','${concepto}')" id="tarea-actualizar"><i class="fa-solid fa-pen"></i></span>

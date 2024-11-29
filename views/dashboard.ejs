@@ -9,7 +9,7 @@
 </head>
 <body class="bg-gray-50">
     <style>
-        #tarea-actualizar, #tarea-eliminar {
+        #tarea-actualizar, #tarea-eliminar, #logout {
             cursor: pointer;
         }
     </style>
@@ -19,7 +19,7 @@
         <nav class="flex justify-between items-center">
             <a href="/" class="text-3xl font-semibold">TodoListo</a>
             <ul class="flex space-x-6">
-                <li><a href="/logout" class="hover:text-teal-200"><i class="fa-solid fa-power-off pr-3"></i>Cerrar sesión</a></li>
+                <li><span id="logout" class="hover:text-teal-200" onclick="cerrarSesion(event)"><i class="fa-solid fa-power-off pr-3"></i>Cerrar sesión</span></li>
             </ul>
         </nav>
     </header>
