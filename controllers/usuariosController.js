@@ -31,13 +31,14 @@ const login = async (req,res) => {
 
 const signIn = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, name, email } = req.body;
+        console.log(req.body);
+        
         const newUser = {
             username,
             password,
-            nombreCompleto: "No Name",
-            email:'generic@gmail.com',
-            tareas: []
+            nombreCompleto: name,
+            email
         };
         newUser.password = bcryptjs.hashSync(password,14);
         const userExists = await Usuario.findOne({username});

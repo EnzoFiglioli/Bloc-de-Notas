@@ -22,10 +22,11 @@ const tareasLista = async (req, res) => {
 const crearTarea = async (req, res) => {
     const userActive = req.user.id;
     try {
-        const { concepto } = req.body;
+        const { concepto, fecha } = req.body;
         const nuevaTarea = await Tarea.create({
             concepto,
-            usuarioId: userActive
+            usuarioId: userActive,
+            fecha: fecha ? fecha : Date.now()
         });
 
         res.json({ msg: 'Tarea creada exitosamente', tarea: nuevaTarea });
